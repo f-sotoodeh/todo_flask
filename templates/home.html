@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.css">
+    <title>Pythonist</title>
+</head>
+<body>
+    <div class="ui text container" style="padding-top: 2em;">
+      <h1 style="color: darkgoldenrod;">TODO List</h1>
+      <p>{{ data.date }}</p>
+
+      <div class="ui form">
+        <form action="/" method="POST">
+          <div class="fields">
+            <div class="eight wide field">
+              <input type="text" name="text" placeholder="Task...">
+            </div>
+
+            <div class="six wide field">
+              <div class="ui selection dropdown">
+                <div class="default text">Select</div>
+                <i class="dropdown icon"></i>
+                <input type="hidden" name="priority">
+                <div class="menu">
+                  <div class="item" data-value="0">Important & Urgent</div>
+                  <div class="item" data-value="1">Important & Non-urgent</div>
+                  <div class="item" data-value="2">Unimportant & Urgent</div>
+                  <div class="item" data-value="3">Unimportant & Non-urgent</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="two wide field">
+              <button class="ui submit fluid icon button">
+                <i class="ui plus icon"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+        
+      <table class="ui table">
+          <!-- <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Notes</th>
+            </tr>
+          </thead> -->
+          <tbody>
+            {% for task in data.tasks %}
+            <tr class="{{ task.color }}">
+              <td>
+                {% if task.state == 'done' %}
+                  <span style="opacity: .5;">{{ task.text }}</span>
+                {% elif task.state == 'canceled' %}
+                  <strike style="opacity: .5;">{{ task.text }}</strike>
+                {% elif task.state == 'postponed' %}
+                  <em style="opacity: .5;">{{ task.text }}</em>
+                {% elif task.state == 'pending' %}
+                  <b>{{ task.text }}</b>
+                {% endif %}
+              </td>
+              <td style="float: right;">
+                <a><i class="ui {{ task.color }} right arrow icon"></i></a>
+                <a href="/mark/canceled/{{ task.id }}/"><i class="ui {{ task.color }} times icon"></i></a>
+                <a href="/mark/done/{{ task.id }}/"><i class="ui {{ task.color }} check icon"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.3/dist/semantic.min.js"></script>
+    <script>
+        $('.ui.dropdown').dropdown();
+    </script>
+</body>
+</html>
